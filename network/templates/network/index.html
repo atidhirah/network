@@ -1,0 +1,40 @@
+{%extends "network/layout.html"%} {%load static%} {%block body%}
+<header data-section="navIndex">
+  <h2>Home</h2>
+</header>
+
+<div class="home-newpost">
+  <form>
+    <input
+      type="hidden"
+      name="user"
+      id="homeNewPostUser"
+      value="{{user.email}}"
+    />
+    <textarea
+      name="post-content"
+      id="homeNewPostContent"
+      placeholder="What's happening?"
+    ></textarea>
+
+    <button
+      class="btn"
+      id="homeNewPostSubmit"
+      data-url="{%url 'network:index'%}"
+    >
+      Post
+    </button>
+  </form>
+</div>
+
+<div id="postData"></div>
+
+<div class="pagination" id="pagination">
+  <div class="pagination__container">
+    <button id="btnPrev">Prev</button>
+    <p></p>
+    <button id="btnNext">Next</button>
+  </div>
+</div>
+
+{%endblock%} {%block title%}Network{%endblock%}

@@ -1,0 +1,64 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{%static 'network/css/main.css'%}" />
+    <script src="{%static 'network/js/entry.js'%}"></script>
+  </head>
+  <body>
+    <div class="register">
+      <div class="register__container">
+        <h1 class="register__header">
+          Register to <a href="{%url 'network:index'%}" class="logo">Network</a>
+        </h1>
+        <div class="register__form">
+          <form action="{%url 'network:register'%}" method="POST">
+            {%csrf_token%}
+            <div class="field">
+              <input type="text" name="fullname" id="fullname" required />
+              <label for="fullname">Fullname</label>
+            </div>
+            <div class="field">
+              <input type="email" name="email" id="email" required />
+              <label for="email">Email</label>
+            </div>
+            <div class="field">
+              <input type="password" name="password" id="password" required />
+              <label for="password">Password</label>
+            </div>
+            <div class="field">
+              <input
+                type="password"
+                name="confirmation"
+                id="confirmation"
+                required
+              />
+              <label for="confirmation">Confirm Password</label>
+            </div>
+
+            {%if message%}
+            <div class="register__error">
+              <p>* {{message}}</p>
+            </div>
+            {%endif%}
+
+            <input type="submit" class="btn" value="Register" />
+          </form>
+        </div>
+        <div class="register__link">
+          Already have an account?
+          <a href="{%url 'network:login'%}">Login here</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

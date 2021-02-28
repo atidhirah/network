@@ -1,0 +1,128 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{%block title%}{%endblock%}</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{%static 'network/css/main.css'%}" />
+
+    <script src="{%static 'network/js/main.js'%}" type="module"></script>
+    {%block script%}{%endblock%}
+  </head>
+  <body>
+    <div class="main">
+      <!-- Primary Nav -->
+      <div class="nav">
+        <nav>
+          <div class="nav__logo">
+            <h1>Network</h1>
+          </div>
+
+          <ul class="nav__links">
+            {%if user.is_authenticated%}
+            <li>
+              <a href="{%url 'network:index'%}" id="navIndex" class="active-nav"
+                ><i class="bx bx-home-circle"></i> Home</a
+              >
+            </li>
+            <li>
+              <a href="{%url 'network:explore'%}" id="navExplore"
+                ><i class="bx bx-hash"></i> All Post</a
+              >
+            </li>
+            <li>
+              <a href="{%url 'network:profile'%}" id="navProfile"
+                ><i class="bx bx-user-circle"></i> Profile</a
+              >
+            </li>
+
+            <li><button class="btn" id="btnNewPost">New Post</button></li>
+
+            {%else%}
+            <li>
+              <a
+                href="{%url 'network:explore'%}"
+                id="navExplore"
+                class="active-nav"
+                ><i class="bx bx-hash"></i> All Post</a
+              >
+            </li>
+            <li>
+              <a href="{%url 'network:login'%}"
+                ><i class="bx bx-log-in"></i>Login</a
+              >
+            </li>
+            <li>
+              <a href="{%url 'network:register'%}"
+                ><i class="bx bx-id-card"></i>Register</a
+              >
+            </li>
+            {%endif%}
+          </ul>
+          {%if user.is_authenticated%}
+          <div class="nav__user-action" id="userAction">
+            <div>
+              <strong>{{user.first_name}} {{user.last_name}}</strong><br />
+              <span id="userActionEmail">{{user.email}}</span>
+            </div>
+            <a href="{%url 'network:logout'%}">Log out</a>
+          </div>
+          {%endif%}
+        </nav>
+      </div>
+
+      <!-- New Post -->
+      <div class="newpost" id="newPost">
+        <div class="newpost__container" id="newPostContainer">
+          <div class="newpost__header">
+            <strong>Create New Post</strong>
+            <i class="bx bx-x" id="newPostClose"></i>
+          </div>
+          <div class="newpost__form">
+            <form>
+              <input
+                type="hidden"
+                name="user"
+                id="newPostUser"
+                value="{{user.email}}"
+              />
+              <textarea
+                name="post-content"
+                id="newPostContent"
+                placeholder="What's happening?"
+              ></textarea>
+
+              <button
+                class="btn"
+                id="newPostSubmit"
+                data-url="{%url 'network:index'%}"
+              >
+                Post
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">{%block body%}{%endblock%}</div>
+
+      <!-- Side Nav -->
+      <section class="sidenav">
+        <h2>sidenav</h2>
+        {%block sidenav%}{%endblock%}
+      </section>
+    </div>
+  </body>
+</html>

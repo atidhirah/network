@@ -1,0 +1,90 @@
+.login,
+.register {
+  background-color: var(--clr-dark);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../img/network.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: var(--clr-text-light);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+.login__container,
+.register__container {
+  background-color: var(--clr-dark);
+  width: min(28rem, 90%);
+  margin: auto;
+  padding: 2em;
+  border-radius: 1em;
+}
+
+.login__header,
+.register__header {
+  margin-bottom: 0.8em;
+}
+
+.login__error,
+.register__error {
+  color: red;
+  font-size: 0.8rem;
+  margin-bottom: 1em;
+}
+
+.login__link,
+.register__link {
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.login__link a,
+.register__link a {
+  color: var(--clr-primary);
+}
+
+/** ===============FORM FIELD=============== **/
+/*  Prevent input field to change bg color 
+    when using autofill.
+*/
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  border: 2px solid var(--clr-primary);
+  -webkit-text-fill-color: var(--clr-text-light);
+  transition: all 5000s ease-in-out 0s;
+}
+
+.field {
+  position: relative;
+  margin-bottom: 1em;
+}
+
+.field label {
+  position: absolute;
+  font-size: 0.8rem;
+  top: 0.5em;
+  left: 0.5em;
+  transform: translate(1em, 1em);
+  transition: all 0.2s;
+}
+
+.field input {
+  background-color: var(--clr-dark);
+  color: var(--clr-text-light);
+  outline: none;
+  border-radius: 5px;
+  border: 2px solid grey;
+  width: 100%;
+  font-size: 1.2rem;
+  padding: 1.2em 0.4em 0.2em;
+}
+
+.field input:focus {
+  border-color: var(--clr-primary);
+}
+
+/* Change label position when focus on input field */
+.focused-field {
+  transform: translate(0, 0) !important;
+}
