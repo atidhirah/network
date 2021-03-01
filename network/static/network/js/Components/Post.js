@@ -1,8 +1,9 @@
 import Database from "../Database.js";
 
 class Post extends HTMLElement {
-  set userLogin(status) {
-    this._isLogin = status ? true : false;
+  set userLogin(email) {
+    this._isLogin = email !== null ? true : false;
+    this._userEmail = email;
   }
 
   set likeStatus(status) {
@@ -23,11 +24,18 @@ class Post extends HTMLElement {
   render() {
     this.innerHTML = `
     <div class="post__container">
-      <header>
-        <p><strong>${this._maker}</strong> (${this._email}) &#183; ${this._time}</p>
+      <header class="post__name">
+        <p>
+          <strong>${this._maker}</strong>
+          (${this._email}) &#183; ${this._time}
+        </p>
+        <div class="post__btn-edit">
+          <i class='bx bx-dots-vertical'></i>
+          <button>Edit</button>
+        </div>
       </header>
-      <div>
-        <p class="post__content">${this._content}</p>
+      <div class="post__content">
+        <p>${this._content}</p>
       </div>
       <div class="post__buttons">
         <button class="post__comment">
@@ -45,6 +53,43 @@ class Post extends HTMLElement {
     `;
 
     if (this._isLogin) {
+      // Go to profile page when user click on post name
+      const userName = this.querySelector(".post__name strong");
+      userName.onclick = () => {
+        fetch(`/${this._email}/`).then((response) => {
+          document.location.href = response.url;
+        });
+      };
+
+      // Hide edit btn if its not user's post
+      const edit = this.querySelector(".post__btn-edit");
+      const editIcon = this.querySelector(".post__btn-edit");
+      const editBtn = this.querySelector(".post__btn-edit button");
+      if (this._email !== this._userEmail) {
+        edit.style.display = "none";
+      } else {
+        let isOnEdit = false;
+        editIcon.onclick = () => {
+          if (!isOnEdit) {
+            editBtn.classList.toggle("show-edit");
+          }
+        };
+
+        // Change content into textarea when
+        // user want to edit the post
+        editBtn.onclick = () => {
+          isOnEdit = true;
+          editBtn.classList.remove("show-edit");
+          console.log(isOnEdit);
+          const content = this.querySelector(".post__content");
+          content.innerHTML = `
+            <textarea>${this._content}</textarea>
+            <button>Edit</button>
+          `;
+        };
+      }
+
+      // Change like icon depend on likeStatus
       const icon = this.querySelector(".post__like i");
       if (this._likeStatus) {
         icon.classList.remove("bx-heart");
@@ -56,7 +101,11 @@ class Post extends HTMLElement {
       const btnLiked = this.querySelector(".post__like");
       btnLiked.onclick = () => this.likeBtnEvent();
     } else {
+      // Hide all button when user not login
+      const editBtn = this.querySelector(".post__btn-edit");
       const buttons = this.querySelector(".post__buttons");
+
+      editBtn.style.display = "none";
       buttons.innerHTML =
         "<p>You need to login first before interact to this post.</p>";
     }

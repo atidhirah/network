@@ -1,7 +1,36 @@
 {%extends "network/layout.html"%} {%load static%} {%block body%}
-<header data-section="navProfile">
+<header data-section="profile" data-email="{{email}}">
   <h2>Profile</h2>
 </header>
+
+<div class="profile">
+  <div class="profile__banner"></div>
+  <div class="profile__data1">
+    <div class="profile__img"></div>
+    <div class="profile__button">
+      <button id="followBtn">Unfollow</button>
+    </div>
+  </div>
+  <div class="profile__data2">
+    <div>
+      <p class="profile__name" id="profileName"></p>
+      <p class="profile__email" id="profileEmail"></p>
+      <div class="profile__date" id="profileDate">
+        <i class="bx bx-calendar"></i>
+        <p>Joined February 2021</p>
+      </div>
+    </div>
+    <div class="profile__following">
+      <p>Following</p>
+      <p id="profileFollowing"></p>
+    </div>
+    <div class="profile__followers">
+      <p>Followers</p>
+      <p id="profileFollowers"></p>
+    </div>
+  </div>
+</div>
+
 <div id="postData"></div>
 
 <div class="pagination" id="pagination">

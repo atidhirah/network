@@ -1,0 +1,73 @@
+.profile {
+  width: 100%;
+  background-color: var(--clr-dark);
+  border-bottom: 1px solid grey;
+}
+
+.profile__banner {
+  height: 10rem;
+  background-color: grey;
+}
+
+.profile__data1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile__img {
+  background-color: azure;
+  background: url("../img/user1.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 150px;
+  height: 150px;
+  margin-top: -75px;
+  margin-left: 2em;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile__button button {
+  background: none;
+  border: 1px solid var(--clr-primary);
+  border-radius: 0.5em;
+  outline: none;
+  color: var(--clr-primary);
+  font-size: 1.15rem;
+  margin: 1em 2em;
+  padding: 0.2em 0.6em;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.profile__button button:hover {
+  opacity: 1;
+}
+
+.profile__data2 {
+  background-color: var(--clr-dark);
+  display: flex;
+  justify-content: space-between;
+  padding: 1em 2em 2em;
+}
+
+.profile__email {
+  color: gray;
+  font-size: 0.85rem;
+  margin-bottom: 1em;
+}
+
+.profile__date {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.8rem;
+}
+
+.profile__following,
+.profile__followers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

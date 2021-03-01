@@ -2,6 +2,7 @@
 @import "./mainnav.css";
 @import "./newpost.css";
 @import "./post.css";
+@import "./profile.css";
 
 /** ==========GLOBAL STYLE========== **/
 :root {
@@ -123,7 +124,6 @@ body {
   position: relative;
 }
 .content > header {
-  margin-bottom: 1em;
   padding: 1em;
   border-bottom: 1px solid grey;
 }

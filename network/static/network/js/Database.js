@@ -18,13 +18,42 @@ class Database {
   }
 
   static getPosts(section, page) {
-    return fetch(`/${section}/${page}`)
+    return fetch(`/section/${section}/${page}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
           return Promise.reject(data.error);
         }
         return Promise.resolve(data);
+      });
+  }
+
+  static getProfile(username, page) {
+    return fetch(`/user/${username}/${page}`)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.error) {
+          return Promise.reject(result.error);
+        } else {
+          return Promise.resolve(result);
+        }
+      });
+  }
+
+  static followUser(user, email) {
+    return fetch(`/user/${user}/1`, {
+      method: "PUT",
+      body: JSON.stringify({
+        email: email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.error) {
+          return Promise.reject(result.error);
+        } else {
+          return Promise.resolve(result.message);
+        }
       });
   }
 

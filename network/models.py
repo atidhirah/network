@@ -14,7 +14,7 @@ class User(AbstractUser):
             "username": self.username,
             "email": self.email,
             "fullname": f"{self.first_name} {self.last_name}",
-            "date_joined": self.date_joined,
+            "date_joined": self.date_joined.strftime("%b %Y"),
             "following_count": self.following.all().count(),
             "followers_count": self.followers.all().count(),
             "following": [user.username for user in self.following.all()],

@@ -11,19 +11,22 @@ from django.core.paginator import Paginator
 from .models import User, Post
 
 
-def index(request):
+def index_view(request):
     if request.user.is_authenticated:
         return render(request, "network/index.html")
     else:
         return HttpResponseRedirect(reverse("network:explore"))
 
 
-def explore(request):
+def explore_view(request):
     return render(request, "network/explore.html")
 
 
-def profile(request):
-    return render(request, "network/profile.html")
+@login_required
+def profile_view(request, email):
+    return render(request, "network/profile.html", {
+        "email": email
+    })
 
 
 def login_view(request):
@@ -78,27 +81,45 @@ def logout_view(request):
 
 
 # ===================== API =====================
-
-
 @login_required
-def user_view(request):
-    user = request.user
-
+@csrf_exempt
+def user_api(request, username, numpage):
     if request.method == "PUT":
+        user = request.user
+        user_following = user.following.all()
         # Update following and followers on PUT method
-        data = json.load(request.body)
+        data = json.loads(request.body)
         email = data.get("email")
-        user_following = User.objects.get(email=email)
-        user.following.add(user_following)
+        user2 = User.objects.get(email=email)
+
+        if user2 in user_following:
+            user.following.remove(user2)
+        else:
+            user.following.add(user2)
         user.save()
         return JsonResponse({'message': "Following user done"}, status=201)
 
     else:
         # Return user data on GET method
-        return JsonResponse({'user_data': user.serialize()}, safe=False)
+        user = User.objects.get(email=username)
+        user_post = Post.objects.filter(
+            maker=user).order_by("-created_on")
+
+        posts = Paginator(user_post, 10)
+        count = posts.num_pages
+        data = posts.page(numpage)
+
+        return JsonResponse({
+            'user_data': user.serialize(),
+            'user_posts': {
+                "page_count": count,
+                "page": numpage,
+                "data": [post.serialize() for post in data]
+            }
+        }, safe=False)
 
 
-def section_view(request, section, numpage):
+def section_api(request, section, numpage):
     # Return all post according to section and page
     if section == 'home':
         following = list(request.user.following.all())
@@ -108,9 +129,6 @@ def section_view(request, section, numpage):
         ).order_by("-created_on")
     elif section == 'explore':
         all_post = Post.objects.all().order_by("-created_on")
-    elif section == 'profile':
-        all_post = Post.objects.filter(
-            maker=request.user).order_by("-created_on")
 
     posts = Paginator(all_post, 10)
     count = posts.num_pages
@@ -124,7 +142,7 @@ def section_view(request, section, numpage):
 
 
 @csrf_exempt
-def post_view(request):
+def post_api(request):
     if request.method == "PUT":
         # Update post content/likes on PUT method
         data = json.loads(request.body)

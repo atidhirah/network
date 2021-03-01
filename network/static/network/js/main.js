@@ -12,10 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (user) {
     userStatus = true;
     userEmail = document.getElementById("userActionEmail").innerText;
+    Database.getProfile(userEmail, 1);
     // Setup new post button from navigation
     setupNewPost();
   } else {
     userStatus = false;
+    userEmail = null;
   }
 
   // First load content
@@ -43,10 +45,8 @@ const setupNewPost = () => {
   // Attemp to create new post
   postBtn.onclick = (e) => {
     const maker = makerForm.value;
-    console.log(maker);
     let content = contentForm.value;
     content = content.replace(/\n\r?/g, "<br />");
-    console.log(maker);
     Database.makePost(maker, content).then(() => {
       // Go to homepage after creating a post
       const url = postBtn.dataset.url;
@@ -59,28 +59,35 @@ const setupNewPost = () => {
 const setupSection = () => {
   const contentHeader = document.querySelector(".content header");
   const navId = contentHeader.dataset.section;
-  activeNav(navId);
+  const section = navId;
 
-  let section = "";
-  switch (navId) {
-    case "navIndex":
-      section = "home";
+  if (section !== "profile") {
+    if (section == "home") {
       setupHomeNewPost();
-      break;
-    case "navExplore":
-      section = "explore";
-      break;
-    case "navProfile":
-      section = "profile";
-      break;
+    }
+    Database.getPosts(section, 1).then((result) => {
+      pageCount = result.page_count;
+      currentPage = result.page;
+      createPostElements(result.data);
+      setupPagination(section);
+    });
+  } else {
+    const profileEmail = contentHeader.dataset.email;
+    Database.getProfile(profileEmail, 1).then((result) => {
+      // Get profile data and show it in UI
+      const userData = result.user_data;
+      setupProfile(userData);
+
+      // Get all user post data, and show it in UI
+      const userPost = result.user_posts;
+      pageCount = userPost.page_count;
+      currentPage = userPost.page;
+      createPostElements(userPost.data);
+      setupPagination(section);
+    });
   }
 
-  Database.getPosts(section, 1).then((result) => {
-    pageCount = result.page_count;
-    currentPage = result.page;
-    createPostElements(result.data);
-    setupPagination(section);
-  });
+  activeNav();
 };
 
 // *====================== HOME SECTION ======================*
@@ -103,6 +110,52 @@ const setupHomeNewPost = () => {
 };
 
 // *====================== PROFILE SECTION ======================*
+const setupProfile = (profileData) => {
+  // Set all data into UI
+  document.getElementById("profileName").innerText = profileData.fullname;
+  document.getElementById("profileEmail").innerText = profileData.email;
+  document.querySelector(
+    "#profileDate p"
+  ).innerText = `Joined ${profileData.date_joined}`;
+  document.getElementById("profileFollowing").innerText =
+    profileData.following_count;
+  document.getElementById("profileFollowers").innerText =
+    profileData.followers_count;
+
+  const followBtn = document.getElementById("followBtn");
+  if (profileData.email === userEmail) {
+    followBtn.style.display = "none";
+  } else {
+    let followers = profileData.followers_count;
+    let isFollowing;
+    if (profileData.followers.includes(userEmail)) {
+      followBtn.innerText = "Unfollow";
+      isFollowing = true;
+    } else {
+      followBtn.innerText = "Follow";
+      isFollowing = false;
+    }
+
+    followBtn.onclick = () => {
+      Database.followUser(userEmail, profileData.email)
+        .then((result) => {
+          console.log(result);
+          console.log(profileData);
+          if (isFollowing) {
+            followers -= 1;
+            isFollowing = false;
+            followBtn.innerText = "Follow";
+          } else {
+            followers += 1;
+            isFollowing = true;
+            followBtn.innerText = "Unfollow";
+          }
+          document.getElementById("profileFollowers").innerText = followers;
+        })
+        .catch((error) => console.log(error));
+    };
+  }
+};
 
 // *====================== UTILS ======================*
 
@@ -126,7 +179,7 @@ const createPostElements = (arrData) => {
   for (let i in arrData) {
     const post = arrData[i];
     const element = document.createElement("network-post");
-    element.userLogin = userStatus;
+    element.userLogin = userEmail;
     if (arrData[i].likes.includes(userEmail)) {
       element.likeStatus = true;
     } else {
@@ -139,13 +192,23 @@ const createPostElements = (arrData) => {
   }
 };
 
-const activeNav = (navId) => {
+const activeNav = () => {
+  // Remove last active nav and pass it into current active
+  const navId = document.querySelector(".content header").dataset.section;
   const lastActiveNav = document.querySelector(".active-nav");
   const activeNav = document.getElementById(navId);
-
-  // Remove last active nav and pass it into current active
   lastActiveNav.classList.remove("active-nav");
-  activeNav.classList.add("active-nav");
+
+  // If user is on another user profile,
+  // it will not activate the "Profile" navigation
+  if (navId === "profile") {
+    const email = document.querySelector(".content header").dataset.email;
+    if (email === userEmail) {
+      activeNav.classList.add("active-nav");
+    }
+  } else {
+    activeNav.classList.add("active-nav");
+  }
 };
 
 const setupPagination = (section) => {

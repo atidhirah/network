@@ -32,17 +32,17 @@
           <ul class="nav__links">
             {%if user.is_authenticated%}
             <li>
-              <a href="{%url 'network:index'%}" id="navIndex" class="active-nav"
+              <a href="{%url 'network:index'%}" id="home" class="active-nav"
                 ><i class="bx bx-home-circle"></i> Home</a
               >
             </li>
             <li>
-              <a href="{%url 'network:explore'%}" id="navExplore"
+              <a href="{%url 'network:explore'%}" id="explore"
                 ><i class="bx bx-hash"></i> All Post</a
               >
             </li>
             <li>
-              <a href="{%url 'network:profile'%}" id="navProfile"
+              <a href="{%url 'network:profile' user.email%}" id="profile"
                 ><i class="bx bx-user-circle"></i> Profile</a
               >
             </li>
@@ -53,7 +53,7 @@
             <li>
               <a
                 href="{%url 'network:explore'%}"
-                id="navExplore"
+                id="explore"
                 class="active-nav"
                 ><i class="bx bx-hash"></i> All Post</a
               >
@@ -91,6 +91,7 @@
           </div>
           <div class="newpost__form">
             <form>
+              {%csrf_token%}
               <input
                 type="hidden"
                 name="user"

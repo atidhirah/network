@@ -10,9 +10,41 @@
   align-items: center;
 }
 
+.post__name strong {
+  color: var(--clr-text-light);
+  cursor: pointer;
+}
+
+.post__name strong:hover {
+  text-decoration: underline;
+}
+
+.post__btn-edit {
+  position: relative;
+}
+
+.post__btn-edit i {
+  cursor: pointer;
+}
+
+.post__btn-edit button {
+  background-color: var(--clr-dark);
+  color: var(--clr-text-light);
+  font-size: 0.8rem;
+  outline: none;
+  border: 1px solid gray;
+  padding: 0.7em 1.5em;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  transform: translate(-100%, 100%);
+  z-index: 10;
+  display: none;
+}
+
 .post__content {
-  min-height: 3rem;
   margin-top: 0.5em;
+  margin-bottom: 2em;
   padding: 0.5em;
 }
 
@@ -63,4 +95,8 @@
 
 .bxs-heart {
   color: var(--clr-pink) !important;
+}
+
+.show-edit {
+  display: block !important;
 }
