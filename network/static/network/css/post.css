@@ -97,6 +97,14 @@
   color: var(--clr-pink) !important;
 }
 
+#postCancel,
+#postEdit {
+  width: fit-content;
+  font-weight: normal;
+  padding: 0 1em;
+  margin: 0;
+}
+
 .show-edit {
   display: block !important;
 }

@@ -57,6 +57,24 @@ class Database {
       });
   }
 
+  static editPost(postId, textContent) {
+    return fetch("/post", {
+      method: "PUT",
+      body: JSON.stringify({
+        post_id: postId,
+        content: textContent,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.error) {
+          return Promise.reject(result.error);
+        } else {
+          return Promise.resolve(result.message);
+        }
+      });
+  }
+
   static likePost(postId, likeStatus) {
     return fetch(`/post`, {
       method: "PUT",

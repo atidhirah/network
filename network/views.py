@@ -149,9 +149,11 @@ def post_api(request):
         post_id = data.get("post_id")
         post = Post.objects.get(id=post_id)
 
+        # Update post content
         if data.get("content") is not None:
             post.content = data["content"]
 
+        # Like/Unlike post
         if data.get("like_status") is not None:
             if data["like_status"]:
                 post.likes.add(request.user)

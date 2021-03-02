@@ -53,7 +53,7 @@ class Post extends HTMLElement {
     `;
 
     if (this._isLogin) {
-      // Go to profile page when user click on post name
+      // Go to profile page when user click on user name
       const userName = this.querySelector(".post__name strong");
       userName.onclick = () => {
         fetch(`/${this._email}/`).then((response) => {
@@ -80,12 +80,34 @@ class Post extends HTMLElement {
         editBtn.onclick = () => {
           isOnEdit = true;
           editBtn.classList.remove("show-edit");
-          console.log(isOnEdit);
           const content = this.querySelector(".post__content");
+          this._content = this._content.replace(/<br\s*\/?>/gi, "\n");
           content.innerHTML = `
-            <textarea>${this._content}</textarea>
-            <button>Edit</button>
+            <textarea id="postTextarea">${this._content}</textarea>
+            <div class="post__buttons">
+              <button class="btn" id="postCancel">Cancel</button>
+              <button class="btn" id="postEdit">Edit</button>
+            </div>
           `;
+
+          this.querySelector("#postCancel").onclick = () => {
+            this._content = this._content.replace(/\n\r?/g, "<br />");
+            content.innerHTML = `<p>${this._content}</p>`;
+            isOnEdit = false;
+          };
+
+          this.querySelector("#postEdit").onclick = () => {
+            let textContent = this.querySelector("#postTextarea").value;
+            textContent = textContent.replace(/\n\r?/g, "<br />");
+            Database.editPost(this._postId, textContent)
+              .then((response) => {
+                console.log(response);
+                this._content = textContent;
+                content.innerHTML = `<p>${this._content}</p>`;
+                isOnEdit = false;
+              })
+              .catch((error) => console.log(error));
+          };
         };
       }
 
