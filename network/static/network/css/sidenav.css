@@ -5,6 +5,7 @@
 
 .people {
   background-color: var(--clr-grey);
+  padding-bottom: 1em;
   border-radius: 1em;
   overflow: hidden;
 }
@@ -14,7 +15,7 @@
   padding: 1em;
 }
 
-.people li {
+.people__container {
   border-bottom: 1px solid var(--clr-border);
   display: flex;
   align-items: center;

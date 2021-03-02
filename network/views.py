@@ -18,6 +18,7 @@ def index_view(request):
         return HttpResponseRedirect(reverse("network:login"))
 
 
+@login_required
 def following_view(request):
     return render(request, "network/following.html")
 
@@ -81,6 +82,23 @@ def logout_view(request):
 
 
 # ===================== API =====================
+def users_api(request, page):
+    # Return all users that is not a following user
+    all_users = User.objects.all()
+    following = request.user.following.all()
+    non_following = all_users.difference(following)
+
+    users = Paginator(non_following, 5)
+    count = users.num_pages
+    data = users.page(page)
+
+    return JsonResponse({
+        "page_count": count,
+        "page": page,
+        "data": [user.serialize() for user in data]
+    })
+
+
 @login_required
 @csrf_exempt
 def user_api(request, username, numpage):
@@ -141,6 +159,7 @@ def section_api(request, section, numpage):
     }, safe=False)
 
 
+@login_required
 @csrf_exempt
 def post_api(request):
     if request.method == "PUT":

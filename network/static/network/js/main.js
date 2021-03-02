@@ -1,5 +1,6 @@
 import Database from "./Database.js";
 import "./Components/Post.js";
+import "./Components/People.js";
 
 let userEmail;
 let pageCount;
@@ -13,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // First load content
   setupSection();
+
+  // Show user suggestion on sidebar
+  setupSideNav();
 });
 
 const setupNewPost = () => {
@@ -146,6 +150,27 @@ const setupProfile = (profileData) => {
         .catch((error) => console.log(error));
     };
   }
+};
+
+// *====================== SIDENAV ======================*
+const setupSideNav = () => {
+  const peopleContainer = document.querySelector("#sidenavPeople ul");
+  peopleContainer.innerHTML = "";
+  Database.getUsers(1).then((result) => {
+    const users = result.data;
+
+    if (users.length === 0) {
+      peopleContainer.innerHTML = `<p class="text-nodata">No user can be displayed.</p>`;
+    }
+    for (let i in users) {
+      const li = document.createElement("li");
+      const element = document.createElement("network-user");
+      element.userData = users[i];
+
+      li.appendChild(element);
+      peopleContainer.appendChild(li);
+    }
+  });
 };
 
 // *====================== UTILS ======================*

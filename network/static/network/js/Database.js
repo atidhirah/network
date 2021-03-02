@@ -1,4 +1,12 @@
 class Database {
+  static getUsers(page) {
+    return fetch(`/users/${page}`)
+      .then((response) => response.json())
+      .then((result) => {
+        return Promise.resolve(result);
+      });
+  }
+
   static makePost(email, content) {
     return fetch("/post", {
       method: "POST",
@@ -40,11 +48,11 @@ class Database {
       });
   }
 
-  static followUser(user, email) {
+  static followUser(user, targetEmail) {
     return fetch(`/user/${user}/1`, {
       method: "PUT",
       body: JSON.stringify({
-        email: email,
+        email: targetEmail,
       }),
     })
       .then((response) => response.json())

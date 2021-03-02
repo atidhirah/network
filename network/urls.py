@@ -12,6 +12,7 @@ urlpatterns = [
     path('logout', views.logout_view, name="logout"),
 
     # API
+    path('users/<int:page>', views.users_api, name="users"),
     path('user/<str:username>/<int:numpage>', views.user_api, name="user"),
     path('section/<str:section>/<int:numpage>',
          views.section_api, name="section"),
