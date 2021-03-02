@@ -1,24 +1,15 @@
 import Database from "./Database.js";
 import "./Components/Post.js";
 
-let userStatus;
 let userEmail;
 let pageCount;
 let currentPage;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Check if user login
-  const user = document.getElementById("userAction");
-  if (user) {
-    userStatus = true;
-    userEmail = document.getElementById("userActionEmail").innerText;
-    Database.getProfile(userEmail, 1);
-    // Setup new post button from navigation
-    setupNewPost();
-  } else {
-    userStatus = false;
-    userEmail = null;
-  }
+  // Get user email
+  userEmail = document.getElementById("userActionEmail").innerText;
+  // Setup new post button from navigation
+  setupNewPost();
 
   // First load content
   setupSection();
@@ -63,7 +54,7 @@ const setupSection = () => {
 
   if (section !== "profile") {
     if (section == "home") {
-      setupHomeNewPost();
+      setupHome();
     }
     Database.getPosts(section, 1).then((result) => {
       pageCount = result.page_count;
@@ -91,20 +82,20 @@ const setupSection = () => {
 };
 
 // *====================== HOME SECTION ======================*
-const setupHomeNewPost = () => {
+const setupHome = () => {
   const homePostBtn = document.getElementById("homeNewPostSubmit");
-  const homePostUser = document.getElementById("homeNewPostUser");
-  const homePostContent = document.getElementById("homeNewPostContent");
+  const url = homePostBtn.dataset.url;
 
-  homePostBtn.onclick = () => {
-    const maker = homePostUser.value;
-    let content = homePostContent.value;
-    content = content.replace(/\n\r?/g, "<br />");
-    Database.makePost(maker, content).then(() => {
-      // Go to homepage after creating a post
-      const url = homePostBtn.dataset.url;
-      document.location.href = url;
-    });
+  homePostBtn.onclick = (e) => {
+    const maker = document.querySelector("#homeNewPostUser").value;
+    let content = document.querySelector("#homeNewPostContent").value;
+    if (content !== "") {
+      content = content.replace(/\n\r?/g, "<br />");
+      Database.makePost(maker, content).then(() => {
+        // Go to homepage after creating a post
+        document.location.href = url;
+      });
+    }
     e.preventDefault();
   };
 };
@@ -175,20 +166,24 @@ const createPostElements = (arrData) => {
   // Clear previous post data
   index.innerHTML = "";
 
-  // Loop through the data and make post element
-  for (let i in arrData) {
-    const post = arrData[i];
-    const element = document.createElement("network-post");
-    element.userLogin = userEmail;
-    if (arrData[i].likes.includes(userEmail)) {
-      element.likeStatus = true;
-    } else {
-      element.likeStatus = false;
-    }
-    element.postData = post;
+  if (arrData.length === 0) {
+    index.innerHTML = `<p class="text-nodata"> No post can be displayed.</p>`;
+  } else {
+    // Loop through the data and make post element
+    for (let i in arrData) {
+      const post = arrData[i];
+      const element = document.createElement("network-post");
+      element.userLogin = userEmail;
+      if (arrData[i].likes.includes(userEmail)) {
+        element.likeStatus = true;
+      } else {
+        element.likeStatus = false;
+      }
+      element.postData = post;
 
-    // Append post element into post container
-    index.appendChild(element);
+      // Append post element into post container
+      index.appendChild(element);
+    }
   }
 };
 

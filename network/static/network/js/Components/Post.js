@@ -129,7 +129,7 @@ class Post extends HTMLElement {
 
       editBtn.style.display = "none";
       buttons.innerHTML =
-        "<p>You need to login first before interact to this post.</p>";
+        "<p>Need to login first before interact with this post.</p>";
     }
   }
 

@@ -11,6 +11,7 @@ class User(AbstractUser):
 
     def serialize(self):
         return {
+            "id": self.id,
             "username": self.username,
             "email": self.email,
             "fullname": f"{self.first_name} {self.last_name}",

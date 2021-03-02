@@ -15,11 +15,11 @@ def index_view(request):
     if request.user.is_authenticated:
         return render(request, "network/index.html")
     else:
-        return HttpResponseRedirect(reverse("network:explore"))
+        return HttpResponseRedirect(reverse("network:login"))
 
 
-def explore_view(request):
-    return render(request, "network/explore.html")
+def following_view(request):
+    return render(request, "network/following.html")
 
 
 @login_required
@@ -77,7 +77,7 @@ def register_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("network:explore"))
+    return HttpResponseRedirect(reverse("network:index"))
 
 
 # ===================== API =====================
@@ -87,7 +87,7 @@ def user_api(request, username, numpage):
     if request.method == "PUT":
         user = request.user
         user_following = user.following.all()
-        # Update following and followers on PUT method
+        # Update following on PUT method
         data = json.loads(request.body)
         email = data.get("email")
         user2 = User.objects.get(email=email)
@@ -119,15 +119,15 @@ def user_api(request, username, numpage):
         }, safe=False)
 
 
+@login_required
 def section_api(request, section, numpage):
     # Return all post according to section and page
-    if section == 'home':
+    if section == 'following':
         following = list(request.user.following.all())
-        following.append(request.user)
         all_post = Post.objects.filter(
             maker__in=following
         ).order_by("-created_on")
-    elif section == 'explore':
+    elif section == 'home':
         all_post = Post.objects.all().order_by("-created_on")
 
     posts = Paginator(all_post, 10)

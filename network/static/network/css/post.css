@@ -1,7 +1,7 @@
 .post__container {
   font-size: 0.9rem;
   padding: 1em;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--clr-border);
 }
 
 .post__container header {
@@ -32,7 +32,7 @@
   color: var(--clr-text-light);
   font-size: 0.8rem;
   outline: none;
-  border: 1px solid gray;
+  border: 1px solid grey;
   padding: 0.7em 1.5em;
   position: absolute;
   bottom: 0px;
@@ -99,9 +99,11 @@
 
 #postCancel,
 #postEdit {
+  background-color: var(--clr-primary);
   width: fit-content;
+  font-size: 0.8rem;
   font-weight: normal;
-  padding: 0 1em;
+  padding: 0.5em 1em;
   margin: 0;
 }
 

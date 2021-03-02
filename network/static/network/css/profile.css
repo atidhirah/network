@@ -1,12 +1,12 @@
 .profile {
   width: 100%;
   background-color: var(--clr-dark);
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--clr-border);
 }
 
 .profile__banner {
   height: 10rem;
-  background-color: grey;
+  background-color: var(--clr-border);
 }
 
 .profile__data1 {

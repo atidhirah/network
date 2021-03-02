@@ -30,15 +30,14 @@
           </div>
 
           <ul class="nav__links">
-            {%if user.is_authenticated%}
             <li>
               <a href="{%url 'network:index'%}" id="home" class="active-nav"
-                ><i class="bx bx-home-circle"></i> Home</a
+                ><i class="bx bx-hash"></i> All Post</a
               >
             </li>
             <li>
-              <a href="{%url 'network:explore'%}" id="explore"
-                ><i class="bx bx-hash"></i> All Post</a
+              <a href="{%url 'network:following'%}" id="following"
+                ><i class="bx bx-home-circle"></i> Following</a
               >
             </li>
             <li>
@@ -48,37 +47,18 @@
             </li>
 
             <li><button class="btn" id="btnNewPost">New Post</button></li>
-
-            {%else%}
-            <li>
-              <a
-                href="{%url 'network:explore'%}"
-                id="explore"
-                class="active-nav"
-                ><i class="bx bx-hash"></i> All Post</a
-              >
-            </li>
-            <li>
-              <a href="{%url 'network:login'%}"
-                ><i class="bx bx-log-in"></i>Login</a
-              >
-            </li>
-            <li>
-              <a href="{%url 'network:register'%}"
-                ><i class="bx bx-id-card"></i>Register</a
-              >
-            </li>
-            {%endif%}
           </ul>
-          {%if user.is_authenticated%}
           <div class="nav__user-action" id="userAction">
             <div>
-              <strong>{{user.first_name}} {{user.last_name}}</strong><br />
-              <span id="userActionEmail">{{user.email}}</span>
+              <span class="text-name"
+                >{{user.first_name}} {{user.last_name}}</span
+              ><br />
+              <span class="text-email" id="userActionEmail"
+                >{{user.email}}</span
+              >
             </div>
             <a href="{%url 'network:logout'%}">Log out</a>
           </div>
-          {%endif%}
         </nav>
       </div>
 
@@ -121,8 +101,31 @@
 
       <!-- Side Nav -->
       <section class="sidenav">
-        <h2>sidenav</h2>
-        {%block sidenav%}{%endblock%}
+        <div class="sidenav-container">
+          <div class="people">
+            <header>
+              <h3>People you might like</h3>
+            </header>
+            <ul>
+              <li>
+                <div class="people__img"></div>
+                <div class="people__data">
+                  <p class="people__name text-name">Atidhira Habibillah</p>
+                  <p class="text-email">atidhira@gmail.com</p>
+                </div>
+                <button class="people__follow">Follow</button>
+              </li>
+              <li>
+                <div class="people__img"></div>
+                <div class="people__data">
+                  <p class="people__name text-name">Atidhira Habibillah</p>
+                  <p class="text-email">atidhira@gmail.com</p>
+                </div>
+                <button class="people__follow">Follow</button>
+              </li>
+            </ul>
+          </div>
+        </div>
       </section>
     </div>
   </body>

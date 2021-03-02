@@ -1,5 +1,6 @@
 @import "./entry.css";
 @import "./mainnav.css";
+@import "./sidenav.css";
 @import "./newpost.css";
 @import "./post.css";
 @import "./profile.css";
@@ -8,8 +9,10 @@
 :root {
   --clr-primary: rgb(120, 120, 255);
   --clr-dark: rgb(10, 10, 10);
+  --clr-grey: rgb(20, 20, 20);
   --clr-text-light: rgb(245, 245, 255);
   --clr-text-grey: rgb(185, 185, 192);
+  --clr-border: rgb(50, 50, 50);
   --clr-pink: rgb(255, 47, 92);
 }
 
@@ -38,11 +41,12 @@ textarea {
   color: var(--clr-text-light);
   resize: none;
   width: 100%;
-  min-height: 10rem;
+  height: 10rem;
+  font-size: 1.2rem;
   padding: 1em;
   outline: none;
   border: none;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--clr-border);
 }
 
 body {
@@ -57,6 +61,22 @@ body {
 
 .logo:hover {
   opacity: 1;
+}
+
+.text-nodata {
+  margin-top: 1em;
+  text-align: center;
+}
+
+.text-name {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--clr-text-light);
+}
+
+.text-email {
+  font-size: 0.8rem;
+  color: var(--clr-text-grey);
 }
 
 .btn {
@@ -114,7 +134,7 @@ body {
 .sidenav {
   grid-area: sidenav;
   background-color: var(--clr-dark);
-  border-left: 1px solid grey;
+  border-left: 1px solid var(--clr-border);
 }
 
 /** =====================CONTENT===================== **/
@@ -125,7 +145,7 @@ body {
 }
 .content > header {
   padding: 1em;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--clr-border);
 }
 
 .pagination {
@@ -154,7 +174,7 @@ body {
 
 /** =====================HOME===================== **/
 .home-newpost {
-  border-bottom: 1em solid rgb(37, 37, 37);
+  border-bottom: 1em solid var(--clr-border);
   margin-bottom: 1em;
   overflow: auto;
 }

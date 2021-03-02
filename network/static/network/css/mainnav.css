@@ -3,7 +3,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid grey;
+  border-right: 1px solid var(--clr-border);
   position: sticky;
   top: 0;
   left: 0;
@@ -54,10 +54,6 @@
 
 .nav__user-action a {
   color: var(--clr-text-light);
-}
-
-.nav__user-action span {
-  font-size: 0.8rem;
 }
 
 .nav__user-action ul {

@@ -1,0 +1,57 @@
+.sidenav-container {
+  color: var(--clr-text-light);
+  padding: 1em;
+}
+
+.people {
+  background-color: var(--clr-grey);
+  border-radius: 1em;
+  overflow: hidden;
+}
+
+.people header {
+  border-bottom: 1px solid var(--clr-border);
+  padding: 1em;
+}
+
+.people li {
+  border-bottom: 1px solid var(--clr-border);
+  display: flex;
+  align-items: center;
+  padding: 0.5em 1em;
+}
+
+.people__img {
+  background: url("../img/user1.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.people__data {
+  flex-grow: 1;
+  padding: 0 1em;
+}
+
+.people__name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.people__follow {
+  background-color: var(--clr-grey);
+  outline: none;
+  color: var(--clr-primary);
+  padding: 0.5em 1em;
+  border-radius: 2em;
+  border: 2px solid var(--clr-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.people__follow:hover {
+  background-color: var(--clr-border);
+}
