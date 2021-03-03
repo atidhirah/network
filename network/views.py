@@ -82,9 +82,10 @@ def logout_view(request):
 
 
 # ===================== API =====================
+@login_required
 def users_api(request, page):
     # Return all users that is not a following user
-    all_users = User.objects.all()
+    all_users = User.objects.exclude(email=request.user.email).all()
     following = request.user.following.all()
     non_following = all_users.difference(following)
 
@@ -105,17 +106,21 @@ def user_api(request, username, numpage):
     if request.method == "PUT":
         user = request.user
         user_following = user.following.all()
-        # Update following on PUT method
+        # Update follow/unfollow on PUT method
         data = json.loads(request.body)
         email = data.get("email")
-        user2 = User.objects.get(email=email)
 
+        # Avoid user to follow its own account
+        if email == user.email:
+            return JsonResponse({'error': "User cannot follow its own account."}, status=401)
+
+        user2 = User.objects.get(email=email)
         if user2 in user_following:
             user.following.remove(user2)
         else:
             user.following.add(user2)
         user.save()
-        return JsonResponse({'message': "Following user done"}, status=201)
+        return JsonResponse({'message': "Following user done."}, status=201)
 
     else:
         # Return user data on GET method

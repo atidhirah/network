@@ -1,12 +1,11 @@
-
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.query_utils import Q
 
 
 class User(AbstractUser):
     following = models.ManyToManyField(
-        'User', related_name="followers"
+        'User', blank=True, related_name="followers"
     )
 
     def serialize(self):
@@ -33,7 +32,7 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
     likes = models.ManyToManyField(
-        'User', related_name="liked_post"
+        'User', blank=True, related_name="liked_post"
     )
 
     def serialize(self):
