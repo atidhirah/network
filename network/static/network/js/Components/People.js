@@ -15,7 +15,6 @@ class NetworkUser extends HTMLElement {
     } else {
       this._isFollowing = false;
     }
-    console.log(this._isFollowing);
 
     this.render();
   }

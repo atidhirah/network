@@ -12,6 +12,7 @@ from .models import User, Post
 
 
 def index_view(request):
+    # Redirect to login page if user is not login
     if request.user.is_authenticated:
         return render(request, "network/index.html")
     else:
@@ -36,6 +37,7 @@ def login_view(request):
         password = request.POST["password"]
         user = authenticate(request, username=email, password=password)
 
+        # Attempt to login user
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse("network:index"))
@@ -55,11 +57,13 @@ def register_view(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
 
+        # Check password confirmation
         if password != confirmation:
             return render(request, "network/register.html", {
                 "message": "Password must match."
             })
 
+        # Attempt to register user data
         try:
             user = User.objects.create_user(email, email, password)
             user.first_name = fullname[0]
@@ -87,8 +91,9 @@ def users_api(request, page):
     # Return all users that is not a following user
     all_users = User.objects.exclude(email=request.user.email).all()
     following = request.user.following.all()
-    non_following = all_users.difference(following)
+    non_following = all_users.difference(following).order_by("-date_joined")
 
+    # Get 5 user data per page
     users = Paginator(non_following, 5)
     count = users.num_pages
     data = users.page(page)

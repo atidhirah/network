@@ -250,6 +250,10 @@ const setupPagination = (section) => {
             currentPage -= 1;
             getPageData(section, currentPage);
             paginationP.innerText = `Page ${currentPage} of ${pageCount}`;
+
+            // Scroll to top of page
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
           }
         };
       } else {
@@ -258,6 +262,10 @@ const setupPagination = (section) => {
             currentPage += 1;
             getPageData(section, currentPage);
             paginationP.innerText = `Page ${currentPage} of ${pageCount}`;
+
+            // Scroll to top of page
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
           }
         };
       }
